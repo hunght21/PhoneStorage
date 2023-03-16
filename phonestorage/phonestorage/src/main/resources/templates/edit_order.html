@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Phone storage</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <!-- Brand -->
+        <a class="navbar-brand logo" href="/index" >Phone storage</a>
+    
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav" style="margin-left: 70px;">
+                <li class="nav-item" style="font-size: 125%">
+                    <a class="nav-link" th:href="@{/products}">Products</a>
+                </li>
+                <li class="nav-item" style="margin-left: 50px; font-size: 125%;" >
+                    <a class="nav-link" th:href="@{/suppliers}">Suppliers</a>
+                </li>
+                <li class="nav-item"  style="margin-left: 50px; font-size: 125%" >
+                    <a class="nav-link" th:href="@{/customers}">Customers</a>
+                </li>
+                <li class="nav-item"  style="margin-left: 50px;font-size: 125%" >
+                    <a class="nav-link" th:href="@{/employees}">Employees</a>
+                </li>
+                <li class="nav-item"  style="margin-left: 50px;font-size: 125%" >
+                    <a class="nav-link" th:href="@{/orders}">Order Management</a>
+                </li>
+                
+            </ul>
+        </div>
+    
+
+    </nav>
+<br>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+            <h1 class="text-center">Updated Order</h1>
+            <div class="card-body">
+                <form th:action="@{/orders/{id}(id=${order.orderId})}" th:object="${order}" method="POST">
+                    <div class="form-group">
+                        <label>Order Id</label>
+                        <input
+                                type="text"
+                                name="orderId"
+                                th:field="*{orderId}"
+                                class="form-control"
+                                placeholder="Enter Order Id - or hide and to update"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label>Order Date</label>
+                        <input
+                                type="text"
+                                name="orderDate"
+                                th:field="*{orderDate}"
+                                class="form-control"
+                                placeholder="Enter Order Date"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="customer">Update Customer</label>
+                        <select class="form-control selectpicker" id="customer" name="customer">
+                            <option th:value="${order.customer.customerId}" th:text="${order.customer.customerName}"></option>
+                            <option th:each="customer : ${customers}"
+                                    th:value="${customer.customerId}"
+                                    th:text="${customer.customerName}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="employee">Update Employee</label>
+                        <select class="form-control selectpicker" id="employee" name="employee">
+                            <option th:value="${order.employee.employeeId}" th:text="${order.employee.employeeName}"></option>
+                            <option th:each="employee : ${employees}"
+                                    th:value="${employee.employeeId}"
+                                    th:text="${employee.employeeName}">
+                            </option>
+                        </select>
+                    </div>
+<!--                 meniu yra bet neduoda pasirinkti is saraso - nukopijuota is create_order-->
+                    <div class="form-group">
+                        <label for="listOfProducts">Update Products</label>
+                        <select class="form-control selectpicker" id="listOfProducts" name="listOfProducts" multiple
+                                data-live-search="true">
+                            <option th:each="product : ${products}"
+                                    th:value="${product.partNumberId}"
+                                    th:text="${product.partDescription}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
